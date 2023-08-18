@@ -48,59 +48,44 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, computed, Ref } from 'vue'
+<script setup lang="ts">
+import { ref, computed, Ref } from 'vue'
 import { useAuthStore } from '../stores/auth.store'
 import { useChatStore } from '../stores/chat.store'
 import { Msg } from '../interfaces/interfaces'
 import { Timestamp } from 'firebase/firestore'
+import { storeToRefs } from 'pinia'
 
-export default defineComponent({
-  name: 'Chat',
-  setup() {
-    // const ADMIN_ID = import.meta.env.VITE_ADMIN_ID as string
+// const ADMIN_ID = import.meta.env.VITE_ADMIN_ID as string
+const authStore = useAuthStore()
+const chatStore = useChatStore()
+const user = authStore.currentUser
+console.log(user.value);
 
-    const authStore = useAuthStore()
-    const chatStore = useChatStore()
-    const user = computed(() => authStore.user)
-    const isChatOpen = ref(false)
-    const messages = computed(() => chatStore.messages)
-    let message: Ref<string> = ref('')
+const isChatOpen = ref(false)
+const messages = computed(() => chatStore.messages)
+let message: Ref<string> = ref('')
+const onToggleChat = async () => {
+  isChatOpen.value = !isChatOpen.value
+}
 
-    const onToggleChat = async () => {
-      isChatOpen.value = !isChatOpen.value
-    }
+const onCloseChat = () => {
+  isChatOpen.value = false
+}
 
-    const onCloseChat = () => {
-      isChatOpen.value = false
-    }
+const onSendMessage = async () => {
+  // if (!user.value) return
+  // const newMessage: Msg = {
+  //   _id: user.value?.uid,
+  //   sender: user.value?.displayName || 'אורח',
+  //   content: message.value,
+  //   createdAt: Timestamp.now(),
+  // }
+  // await chatStore.sendMessage(newMessage)
+  // message.value = ''
+}
 
-    const onSendMessage = async () => {
-      if(!user.value) return
-      const newMessage: Msg = {
-        _id: user.value?.uid,
-        sender: user.value?.displayName || 'אורח',
-        content: message.value,
-        createdAt: Timestamp.now(),
-      }
-      await chatStore.sendMessage(newMessage)
-      message.value = ''
-    }
-
-    const onSentOrReceived = (userUID: string) => {
-      return userUID === user.value?.uid ? 'sent' : 'received'
-    }
-
-    return {
-      onSentOrReceived,
-      onSendMessage,
-      onToggleChat,
-      onCloseChat,
-      isChatOpen,
-      messages,
-      message,
-      user,
-    }
-  },
-})
+const onSentOrReceived = (userUID: string) => {
+  // return userUID === user.value?.uid ? 'sent' : 'received'
+}
 </script>

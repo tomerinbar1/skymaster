@@ -1,74 +1,62 @@
-import {defineStore} from 'pinia'
-import {authService} from '../services/auth.service'
-import {onAuthStateChanged, User} from 'firebase/auth'
+import { defineStore } from 'pinia'
+import { authService } from '../services/auth.service'
+import { onAuthStateChanged, User } from 'firebase/auth'
+import { computed, ref } from 'vue'
 
-interface InitializeAuthState {
-    user: User | null
-}
+type AuthState = User | null
 
-const initialState: InitializeAuthState = {
-    user: null,
-}
 
-export const useAuthStore = defineStore('auth', {
-    state: () => (initialState),
-    getters: {
-        isLoggedIn: state => !!state.user,
-        currentUser(state) {
-            return state.user
-        },
-    },
-    actions: {
-        async init() {
-            const auth = authService.onGetAuth()
-            onAuthStateChanged(auth, user => {
-                this.user = user
-            })
-        },
+export const useAuthStore = defineStore('auth', () => {
+  const user = ref<AuthState>(null)
 
-        async login(email: string, password: string) {
-            try {
-                const userCredential = await authService.signIn(email, password)
-                this.user = userCredential.user
-            } catch (error: any) {
-                throw new Error(error.message)
-            }
-        },
+  function init() {
+    const auth = authService.onGetAuth()
+    onAuthStateChanged(auth, currentUser => {
+      user.value = currentUser
+    })
+    }
 
-        async signInWithGoogleRedirect() {
-            await authService.signInWithGoogle()
-            const userCredential = await authService.getSignInResult()
-            const user = userCredential?.user
-            if (user) {
-                this.user = user
-            }
-        },
+    async function login(email: string, password: string) {
+      try {
+        const userCredential = await authService.signIn(email, password)
+        user.value = userCredential.user
+      } catch (error: any) {
+        throw new Error(error.message)
+      }
+    }
 
-        async register(email: string, password: string, displayName: string) {
-            try {
-                const userCredential = await authService.signUp(
-                    email,
-                    password,
-                    displayName
-                )
-                const user = userCredential.user
+    async function signInWithGoogleRedirect() {
+      await authService.signInWithGoogle()
+      const userCredential = await authService.getSignInResult()
+      if (userCredential?.user) {
+        user.value = userCredential.user
+      }
+    }
 
-                if (user) {
-                    this.user = user
-                    await authService.writeUserData({
-                        uid: user.uid,
-                        email: user.email,
-                        displayName: user.displayName,
-                    })
-                }
-            } catch (error: any) {
-                throw error || 'Registration failed'
-            }
-        },
+    async function register(email: string, password: string, displayName: string) {
+      try {
+        const userCredential = await authService.signUp(email, password, displayName)
 
-        async logout() {
-            await authService.signOut()
-            this.user = null
-        },
-    },
-})
+        if (userCredential.user) {
+          user.value = userCredential.user
+          await authService.writeUserData({
+            uid: userCredential.user.uid,
+            email: userCredential.user.email,
+            displayName: userCredential.user.displayName,
+          })
+        }
+      } catch (error: any) {
+        throw error || 'Registration failed'
+      }
+    }
+
+    async function logout() {
+      await authService.signOut()
+      user.value = null
+    }
+
+    const currentUser = computed(() => user)
+    const isLoggedIn = computed(() => !!user)
+
+    return { user, currentUser, isLoggedIn, init, login, logout, register, signInWithGoogleRedirect }
+  })

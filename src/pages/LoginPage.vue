@@ -39,7 +39,7 @@ export default defineComponent({
   name: 'signInPage',
   setup() {
     const authStore = useAuthStore()
-
+    
     const email = ref('')
     const password = ref('')
     const router = useRouter()

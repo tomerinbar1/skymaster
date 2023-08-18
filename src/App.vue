@@ -52,6 +52,7 @@ export default defineComponent({
   setup() {
     const router = useRouter()
     const route = useRoute()
+    const user = useAuthStore().currentUser
 
     const relativeRoutes = router.getRoutes().filter(route => !AUTH_PATHS.includes(route.path))
 

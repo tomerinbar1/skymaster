@@ -1,0 +1,28 @@
+.bm-menu {
+  padding: 0;
+  transition: all 0.3s ease 0s;
+
+  .bm-item-list {
+    margin-top: 20px;
+
+    &.bm-item-list > * {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 0.5em 0.5em 0.5em 1em;
+      font-family: 'alef-regular';
+      font-size: 1.7em;
+
+      &.menu-item {
+        white-space: nowrap;
+      }
+    }
+  }
+}
+
+.bm-burger-button {
+  position: absolute;
+  width: 36px;
+  right: 20px;
+  top: 15px;
+}

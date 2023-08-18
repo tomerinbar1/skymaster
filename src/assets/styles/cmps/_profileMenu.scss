@@ -1,0 +1,45 @@
+.profile-menu {
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  margin-inline-start: 5px;
+  height: 100%;
+  z-index: 2;
+
+  .welcome {
+    display: flex;
+    margin-inline-end: 5px;
+    width: max-content;
+  }
+
+  img {
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: lightgray;
+  }
+
+  .dropdown-list {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 80px;
+    left: 0px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    li {
+      background-color: rgb(241, 241, 241);
+      padding: 10px;
+      font-size: 2em;
+      font-family: 'alef-regular';
+      cursor: pointer;
+      &:hover {
+        background-color: lightgray;
+      }
+    }
+  }
+}

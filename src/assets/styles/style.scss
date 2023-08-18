@@ -1,0 +1,19 @@
+// Setup
+@use './setup/base';
+@use './setup/typography';
+
+// Pages
+@use './pages/homePage';
+@use './pages/coursePage';
+@use './pages/signInPage';
+@use './pages/signUpPage';
+
+// Components
+@use './cmps/app';
+@use './cmps/chat';
+@use './cmps/appHeader';
+@use './cmps/sideBar';
+@use './cmps/appFooter';
+@use './cmps/profileMenu';
+
+

@@ -1,0 +1,40 @@
+.main-content {
+  img {
+    position: absolute;
+    width: 100%;
+    object-position: center;
+    object-fit: cover;
+    height: -webkit-fill-available;
+  }
+  h1,
+  h2 {
+    z-index: 1;
+  }
+  h2 {
+    font-size: 1.5rem;
+    font-family: 'alef-bold';
+    font-weight: 700;
+    color: aliceblue;
+    margin-top: 20px;
+  }
+  .dir {
+    direction: ltr;
+  }
+  .slogan {
+    display: flex;
+    position: absolute;
+    flex-direction: column;
+    justify-content: center;
+    top: 115px;
+    width: 100%;
+    padding-left: 20px;
+    h1 {
+      font-family: 'suez-one';
+      font-size: 3rem;
+      font-weight: 900;
+      margin-top: 20px;
+      text-align: center;
+      color: rgb(80, 80, 80);
+    }
+  }
+}

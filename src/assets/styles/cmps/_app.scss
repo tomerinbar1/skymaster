@@ -1,0 +1,22 @@
+#app {
+  background-color: rgb(241, 241, 241);
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  .app-wrapper{
+    width: 100%;
+    height: 100%;
+  }
+}
+
+@media (min-width: 768px) {
+  .mobile-navbar {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .desktop-navbar {
+    visibility: hidden;
+  }
+}
